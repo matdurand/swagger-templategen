@@ -1,0 +1,36 @@
+@Injectable()
+export class {{clientName}} {
+  constructor(private readonly http: HttpService) {}
+
+  {{#each paths}}
+    {{#each .}}
+      public {{operationId}}(
+        {{#hasPathParams .}}pathArgs: {{pascalCase operationId}}PathArgs,{{/hasPathParams}} {{#hasQueryParams .}}queryArgs: {{pascalCase operationId}}QueryArgs,{{/hasQueryParams}} {{#hasBodyParams .}}bodyArgs: {{#with (bodyParam .)}} {{schemaType schema}} {{/with}},{{/hasBodyParams}}
+      ) : Promise<{{responseType responses}}> {
+        const url = uriTemplates('{{@../key}}'){{#hasPathParams .}}.fillForObject(pathArgs){{/hasPathParams}};
+        return this.http
+          .{{@key}}(`${url}{{#hasQueryParams .}}${this.buildQuery(queryArgs)}{{/hasQueryParams}}`{{#hasBodyParams .}},bodyArgs{{/hasBodyParams}})
+          .toPromise();
+      }
+
+    {{/each}}
+  {{/each}}
+
+  private buildQuery(params: any) : string {
+    const query = Object.entries(params)
+      .map(this.encodeSingleCriteria)
+      .join("&");
+    if (!query) {
+      return "";
+    }
+    return `?${query}`;
+  }
+
+  private encodeSingleCriteria([key, value]: [string, string | string[]]) : string {
+    if (Array.isArray(value)) {
+      return value.map(v => `${key}=${encodeURIComponent(v)}`).join("&");
+    } else {
+      return `${key}=${encodeURIComponent(value)}`;
+    }
+  }
+}

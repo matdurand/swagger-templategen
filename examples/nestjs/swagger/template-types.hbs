@@ -1,0 +1,28 @@
+{{#each definitions}}
+export type {{@key}} = {
+  {{#each properties}}
+    {{@key}}{{#doesntContain ../required @key}}? {{/doesntContain}} : {{{propertyType .}}},
+  {{/each}}
+}
+
+{{/each}}
+
+{{#each paths}}
+  {{#each .}}
+    {{#hasQueryParams .}}
+    export type {{pascalCase operationId}}QueryArgs = {
+      {{#each (queryParams .)}}
+      {{name}}{{#unless required}}?{{/unless}}: {{propertyType .}},
+      {{/each}}
+    }
+    {{/hasQueryParams}}
+
+    {{#hasPathParams .}}
+    export type {{pascalCase operationId}}PathArgs = {
+      {{#each (pathParams .)}}
+      {{name}}: {{propertyType .}},
+      {{/each}}
+    }
+    {{/hasPathParams}}
+  {{/each}}
+{{/each}}
