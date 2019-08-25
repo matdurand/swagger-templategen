@@ -1,7 +1,7 @@
 import { Config } from "bili";
 
 const config: Config = {
-  input: "generator.js",
+  input: "src/generator.js",
   babel: {
     minimal: true
   },
