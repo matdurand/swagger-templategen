@@ -1,14 +1,13 @@
 {
   "name": "swagger-templategen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "generator.js",
-  "scripts": {},
-  "author": "Mathieu Durand",
-  "license": "MIT",
   "scripts": {
     "release": "standard-version"
   },
+  "author": "Mathieu Durand",
+  "license": "MIT",
   "dependencies": {
     "change-case": "^3.1.0",
     "handlebars": "^4.1.2"
