@@ -31,6 +31,23 @@ function addHelpers(handlebars) {
     }
   });
 
+  handlebars.registerHelper("operationId", function(path, method, operation) {
+    if (operation.operationId) {
+      return operation.operationId;
+    }
+    const parts = (
+      method +
+      path
+        .replace(/\{/g, "")
+        .replace(/\}/g, "")
+        .replace(/\//g, "_")
+        .replace(/-/g, "_")
+    ).split("_");
+    return changeCase.camelCase(
+      parts.map(p => changeCase.pascalCase(p)).join("")
+    );
+  });
+
   handlebars.registerHelper("schemaType", function(schema) {
     return schemaType(schema);
   });
@@ -62,19 +79,26 @@ function addHelpers(handlebars) {
   });
 
   handlebars.registerHelper("bodyParam", function(operations, options) {
-    return operations.parameters.find(p => p.in && p.in === "body");
+    return operations.parameters
+      ? operations.parameters.find(p => p.in && p.in === "body")
+      : [];
   });
 
   handlebars.registerHelper("queryParams", function(operations, options) {
-    return operations.parameters.filter(p => p.in && p.in === "query");
+    return operations.parameters
+      ? operations.parameters.filter(p => p.in && p.in === "query")
+      : [];
   });
 
   handlebars.registerHelper("pathParams", function(operations, options) {
-    return operations.parameters.filter(p => p.in && p.in === "path");
+    return operations.parameters
+      ? operations.parameters.filter(p => p.in && p.in === "path")
+      : [];
   });
 
   handlebars.registerHelper("hasBodyParams", function(operations, options) {
     if (
+      operations.parameters &&
       operations.parameters.find(p => p.in && p.in === "body") !== undefined
     ) {
       return options.fn(this);
@@ -83,6 +107,7 @@ function addHelpers(handlebars) {
 
   handlebars.registerHelper("hasQueryParams", function(operations, options) {
     if (
+      operations.parameters &&
       operations.parameters.find(p => p.in && p.in === "query") !== undefined
     ) {
       return options.fn(this);
@@ -91,6 +116,7 @@ function addHelpers(handlebars) {
 
   handlebars.registerHelper("hasPathParams", function(operations, options) {
     if (
+      operations.parameters &&
       operations.parameters.find(p => p.in && p.in === "path") !== undefined
     ) {
       return options.fn(this);
@@ -98,7 +124,7 @@ function addHelpers(handlebars) {
   });
 
   handlebars.registerHelper("responseType", function(responses, code, options) {
-    if (responses["200"]) {
+    if (responses["200"] && responses["200"].schema) {
       return schemaType(responses["200"].schema);
     }
     return "void";
