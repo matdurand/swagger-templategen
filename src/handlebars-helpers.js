@@ -1,4 +1,5 @@
 const changeCase = require("change-case");
+const _ = require('lodash');
 
 function addHelpers(handlebars) {
   function swaggerToTsType(prop) {
@@ -72,6 +73,10 @@ function addHelpers(handlebars) {
       fn: options.inverse,
       inverse: options.fn
     });
+  });
+
+  handlebars.registerHelper("isEmptyObject", function(obj) {
+    return _.isEmpty(obj);
   });
 
   handlebars.registerHelper("pascalCase", function(val, options) {
