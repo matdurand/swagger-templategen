@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/matdurand/swagger-templategen/compare/v0.1.6...v0.1.7) (2019-08-29)
+
+### Bug Fixes
+
+- package-lock ([8d736c0](https://github.com/matdurand/swagger-templategen/commit/8d736c0))
+
+### Features
+
+- add a helper for empty objects ([151e9dc](https://github.com/matdurand/swagger-templategen/commit/151e9dc))
+
 ### [0.1.6](https://github.com/matdurand/swagger-templategen/compare/v0.1.1...v0.1.6) (2019-08-26)
 
 ### Bug Fixes
