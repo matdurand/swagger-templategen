@@ -1,28 +1,33 @@
 {{#each definitions}}
+{{#unless (isEmptyObject properties)}}
 export type {{@key}} = {
   {{#each properties}}
-    {{@key}}{{#doesntContain ../required @key}}? {{/doesntContain}} : {{{propertyType .}}},
+    "{{@key}}"{{#doesntContain ../required @key}}? {{/doesntContain}} : {{{propertyType .}}},
   {{/each}}
 }
+{{/unless}}
 
 {{/each}}
 
 {{#each paths}}
   {{#each .}}
+    {{#if parameters}}
     {{#hasQueryParams .}}
-    export type {{pascalCase operationId}}QueryArgs = {
+    export type {{pascalCase (operationId @../key @key .)}}QueryArgs = {
       {{#each (queryParams .)}}
-      {{name}}{{#unless required}}?{{/unless}}: {{propertyType .}},
+      "{{name}}"{{#unless required}}?{{/unless}}: {{propertyType .}},
       {{/each}}
     }
     {{/hasQueryParams}}
 
+    
     {{#hasPathParams .}}
-    export type {{pascalCase operationId}}PathArgs = {
+    export type {{pascalCase (operationId @../key @key .)}}PathArgs = {
       {{#each (pathParams .)}}
-      {{name}}: {{propertyType .}},
+      "{{name}}": {{propertyType .}},
       {{/each}}
     }
     {{/hasPathParams}}
+    {{/if}}
   {{/each}}
 {{/each}}

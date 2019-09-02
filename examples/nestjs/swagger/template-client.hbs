@@ -1,15 +1,28 @@
-@Injectable()
+export interface Options {
+  baseUrl: string;
+}
+
 export class {{clientName}} {
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService, private readonly options: Options) {}
 
   {{#each paths}}
     {{#each .}}
-      public {{operationId}}(
-        {{#hasPathParams .}}pathArgs: {{pascalCase operationId}}PathArgs,{{/hasPathParams}} {{#hasQueryParams .}}queryArgs: {{pascalCase operationId}}QueryArgs,{{/hasQueryParams}} {{#hasBodyParams .}}bodyArgs: {{#with (bodyParam .)}} {{schemaType schema}} {{/with}},{{/hasBodyParams}}
+      protected _{{operationId @../key @key .}}(
+        {{#if parameters}}
+          {{#hasPathParams .}}pathArgs: {{pascalCase (operationId @../key @key .)}}PathArgs,{{/hasPathParams}} 
+          {{#hasQueryParams .}}queryArgs: {{pascalCase (operationId @../key @key .)}}QueryArgs,{{/hasQueryParams}} 
+          {{#hasBodyParams .}}bodyArgs: {{#with (bodyParam .)}} {{schemaType schema}} {{/with}},{{/hasBodyParams}}
+        {{/if}}
+        config?: AxiosRequestConfig
       ) : Promise<{{responseType responses}}> {
-        const url = uriTemplates('{{@../key}}'){{#hasPathParams .}}.fillForObject(pathArgs){{/hasPathParams}};
+        let pathParams = {};
+        {{#if parameters}}
+        {{#hasPathParams .}}pathParams = pathArgs;{{/hasPathParams}}
+        {{/if}}
+        const url = uriTemplates(`${this.options.baseUrl}{{@../key}}`).fill(pathParams);
         return this.http
-          .{{@key}}(`${url}{{#hasQueryParams .}}${this.buildQuery(queryArgs)}{{/hasQueryParams}}`{{#hasBodyParams .}},bodyArgs{{/hasBodyParams}})
+          .{{@key}}<{{responseType responses}}>(`${url}{{#if parameters}}{{#hasQueryParams .}}${this.buildQuery(queryArgs)}{{/hasQueryParams}}{{/if}}`{{#if parameters}}{{#hasBodyParams .}},bodyArgs{{/hasBodyParams}}{{/if}}, config)
+          .pipe(map(response => response.data))
           .toPromise();
       }
 
