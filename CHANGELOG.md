@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/matdurand/swagger-templategen/compare/v0.1.6...v0.1.9) (2019-09-13)
+
+
+### Bug Fixes
+
+* better example for nestjs ([e0dc41d](https://github.com/matdurand/swagger-templategen/commit/e0dc41d))
+* package-lock ([8d736c0](https://github.com/matdurand/swagger-templategen/commit/8d736c0))
+* remove markdown from prettier ([4afb0b2](https://github.com/matdurand/swagger-templategen/commit/4afb0b2))
+
+
+### Features
+
+* add a helper for empty objects ([151e9dc](https://github.com/matdurand/swagger-templategen/commit/151e9dc))
+* allow for additional handlebars setup ([947055f](https://github.com/matdurand/swagger-templategen/commit/947055f))
+
 ### [0.1.8](https://github.com/matdurand/swagger-templategen/compare/v0.1.7...v0.1.8) (2019-08-29)
 
 ### Features
