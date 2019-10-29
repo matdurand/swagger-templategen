@@ -1,5 +1,5 @@
 const changeCase = require("change-case");
-const _ = require('lodash');
+const _ = require("lodash");
 
 function addHelpers(handlebars) {
   function swaggerToTsType(prop) {
@@ -7,10 +7,15 @@ function addHelpers(handlebars) {
       return prop.$ref.replace("#/definitions/", "");
     }
     switch (prop.type) {
+      case "number":
       case "integer":
         return "number";
-      default:
+      case "boolean":
+        return "boolean";
+      case "string":
         return "string";
+      default:
+        return "object";
     }
   }
 
