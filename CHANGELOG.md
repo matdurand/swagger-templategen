@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/matdurand/swagger-templategen/compare/v0.1.9...v0.2.1) (2019-10-29)
+
+
+### Features
+
+* support open api v3 types ([3198a61](https://github.com/matdurand/swagger-templategen/commit/3198a61))
+
 ### [0.1.9](https://github.com/matdurand/swagger-templategen/compare/v0.1.6...v0.1.9) (2019-09-13)
 
 
